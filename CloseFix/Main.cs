@@ -1,5 +1,6 @@
 ﻿using MelonLoader;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,14 +22,13 @@ namespace CloseFix
     {
         public override void OnApplicationQuit()
         {
-            CloseGameAfterConfig().GetAwaiter().GetResult();
+            MelonLoader.MelonCoroutines.Start(CloseGameAfterConfig());
         }
 
-        public async Task CloseGameAfterConfig()
+        public IEnumerator CloseGameAfterConfig()
         {
             MelonModLogger.Log("Closing your game.");
-            // Will add more for world glitching soon
-            await Task.Delay(1000);
+            yield return new UnityEngine.WaitForSeconds(2f);
             Process.GetCurrentProcess().Kill();
         }
     }
